@@ -1,36 +1,71 @@
-
-# Name your project! Project names should contain only lowercase characters
-# and underscores. A good package name should reflect your organization's
-# name or the intended use of these models
 name: 'ecids_test'
 version: '1.0.0'
+config-version: 2
 
-# This setting configures which "profile" dbt uses for this project.
 profile: 'shared_snowflake_profile'
 
-# These configurations specify where dbt should look for different types of files.
-# The `model-paths` config, for example, states that models in this project can be
-# found in the "models/" directory. You probably won't need to change these!
-model-paths: ["models"]
-analysis-paths: ["analyses"]
-test-paths: ["tests"]
-seed-paths: ["seeds"]
-macro-paths: ["macros"]
-snapshot-paths: ["snapshots"]
+vars:
+  # Database and Schema Configuration
+  database_name: 'HHS_WRKSPC_DB'
+  raw_schema: 'FIVETRAN_RAW'
+  staging_schema: 'STAGING'
+  intermediate_schema: 'INTEGRATION'
+  marts_schema: 'PRESENTATION'
+  
+  # Data source configuration - SIMPLIFIED
+  data_sources:
+    snap:
+      table_name: 'SNAP'
+      columns: ['family_id', 'household_size', 'monthly_income', 'benefit_amount', 'enrollment_status']
+      filter_column: 'enrollment_status'
+      filter_values: ['active', 'pending']
+      income_column: 'monthly_income'
+      size_column: 'household_size'
+      amount_column: 'benefit_amount'
+      status_column: 'enrollment_status'
+    wic:
+      table_name: 'WIC'
+      columns: ['family_id', 'number_of_children', 'income_level', 'voucher_value', 'program_status']
+      filter_column: 'program_status'
+      filter_values: ['active', 'certified']
+      income_column: 'income_level'
+      size_column: 'number_of_children'
+      amount_column: 'voucher_value'
+      status_column: 'program_status'
 
-clean-targets:         # directories to be removed by `dbt clean`
-  - "target"
-  - "dbt_packages"
 
+  
+  # Business logic thresholds
+  income_thresholds:
+    low: 1500
+    moderate: 3000
+  
+  utilization_thresholds:
+    high: 90
+    moderate: 70
+  
+  benefit_thresholds:
+    high_ratio: 0.3
+    moderate_ratio: 0.15
 
-# Configuring models
-# Full documentation: https://docs.getdbt.com/docs/configuring-models
-
-# In this example config, we tell dbt to build all models in the example/
-# directory as views. These settings can be overridden in the individual model
-# files using the `{{ config(...) }}` macro.
+# Model Configuration
 models:
   ecids_test:
-    # Config indicated by + and applies to all files under models/example/
-    example:
+    staging:
       +materialized: view
+      +schema: STAGING
+      # +schema: "{{ var('staging_schema') }}"
+    intermediate:
+      +materialized: view
+      +schema: INTEGRATION
+      # +schema: "{{ var('intermediate_schema') }}"
+    marts:
+      +materialized: table
+      +schema: PRESENTATION
+      # +schema: "{{ var('marts_schema') }}"
+      +cluster_by: ['program_type']
+
+# Clean targets
+clean-targets:
+  - "target"
+  - "dbt_packages"
