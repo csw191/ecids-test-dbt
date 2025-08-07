@@ -301,3 +301,6 @@ temp/
 
 # Analysis files (uncomment if you don't want to track analysis)
 # analysis/
+
+# Ignore dagster home directory
+dagster_home/
