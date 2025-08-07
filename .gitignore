@@ -304,3 +304,9 @@ temp/
 
 # Ignore dagster home directory
 dagster_home/
+cleanup_dagster.sh
+docker-compose.yml
+Makefile
+hhs_platform/
+.env
+
