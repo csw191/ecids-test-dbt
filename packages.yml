@@ -1,16 +1,6 @@
+# FILE: packages.yml
+# Location: /home/jparep/proj/dbt/ecids-test/ecids_test/packages.yml
+
 packages:
-  # Essential utilities - UPDATED VERSION
   - package: dbt-labs/dbt_utils
-    version: [">=1.3.0", "<2.0.0"]
-    
-  # Data quality testing - UPDATED VERSION
-  - package: calogica/dbt_expectations
-    version: [">=0.10.0", "<0.11.0"]
-    
-  # Code generation helpers - UPDATED VERSION
-  - package: dbt-labs/codegen
-    version: [">=0.13.0", "<0.14.0"]
-    
-  # Optional: Audit helper for comparing datasets
-  - package: dbt-labs/audit_helper
-    version: [">=0.9.0", "<1.0.0"]
+    version: 1.1.1
