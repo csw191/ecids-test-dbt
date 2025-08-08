@@ -8,8 +8,8 @@ sources:
   - name: hhs_raw_data
     # database: "{{ var('database_name') }}"
     # schema: "{{ var('raw_schema') }}"
-    database: HHS_FIVETRAN_RAW_DB #HHS_WRKSPC_DB
-    schema: CSX200_CSX200 #FIVETRAN_RAW
+    database: HHS_FIVETRAN_RAW_DB #HHS_FIVETRAN_RAW_DB #HHS_WRKSPC_DB
+    schema: CSX200_CSX200 #CSX200_CSX200 #FIVETRAN_RAW
     description: "Raw data from Fivetran for child assistance programs"
     tables:
       - name: SNAP

@@ -6,12 +6,12 @@ profile: 'shared_snowflake_profile'
 
 vars:
   # Database and Schema Configuration
-  database_name: 'HHS_FIVETRAN_RAW_DB'
-  raw_schema: 'CSX200_CSX200'
-  staging_schema: 'CSX200_CSX200' # Staging
-  intermediate_schema: 'CSX200_CSX200' # Integration
-  marts_schema: 'CSX200_CSX200' # Presentation
-  
+  database_name: 'HHS_FIVETRAN_RAW_DB' #HHS_WRKSPC_DB #'HHS_FIVETRAN_RAW_DB'
+  raw_schema: 'CSX200_CSX200' #'FIVETRAN_RAW' #'CSX200_CSX200'
+  staging_schema: 'CSX200_CSX200' #'STAGING' #'CSX200_CSX200' 
+  intermediate_schema: 'CSX200_CSX200' #'INTEGRATION' #'CSX200_CSX200'
+  marts_schema: 'CSX200_CSX200' #'PRESENTATION' #'CSX200_CSX200'
+
   # Data source configuration - SIMPLIFIED
   data_sources:
     snap:
@@ -53,15 +53,15 @@ models:
   ecids_test:
     staging:
       +materialized: view
-      +schema: STAGING
+      +schema: CSX200_CSX200 #STAGING
       # +schema: "{{ var('staging_schema') }}"
     intermediate:
       +materialized: view
-      +schema: INTEGRATION
+      +schema: CSX200_CSX200 #INTEGRATION
       # +schema: "{{ var('intermediate_schema') }}"
     marts:
       +materialized: table
-      +schema: PRESENTATION
+      +schema: CSX200_CSX200 #PRESENTATION
       # +schema: "{{ var('marts_schema') }}"
       +cluster_by: ['program_type']
 
