@@ -52,11 +52,11 @@ vars:
 models:
   ecids_test:
     staging:
-      +materialized: view
+      +materialized: table
       +schema: staging #STAGING
       # +schema: "{{ var('staging_schema') }}"
     intermediate:
-      +materialized: view
+      +materialized: table
       +schema: integration #INTEGRATION
       # +schema: "{{ var('intermediate_schema') }}"
     marts:
