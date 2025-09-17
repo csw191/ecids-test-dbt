@@ -5,12 +5,12 @@ config-version: 2
 profile: 'shared_snowflake_profile'
 
 vars:
-  # Database and Schema Configuration
-  # database_name: 'HHS_FIVETRAN_INT_DB' #HHS_WRKSPC_DB #'HHS_FIVETRAN_RAW_DB'
-  # raw_schema: 'FIVETRAN_RAW' #'FIVETRAN_RAW' #'CSX200_CSX200'
-  # staging_schema: 'STAGING' #'STAGING' #'CSX200_CSX200' 
-  # intermediate_schema: 'INTEGRATION' #'INTEGRATION' #'CSX200_CSX200'
-  # marts_schema: 'PRESENTATION' #'PRESENTATION' #'CSX200_CSX200'
+  #Database and Schema Configuration
+  database_name: 'HHS_FIVETRAN_INT_DB' #HHS_WRKSPC_DB #'HHS_FIVETRAN_RAW_DB'
+  raw_schema: 'FIVETRAN_RAW' #'FIVETRAN_RAW' #'CSX200_CSX200'
+  staging_schema: 'STAGING' #'STAGING' #'CSX200_CSX200' 
+  intermediate_schema: 'INTEGRATION' #'INTEGRATION' #'CSX200_CSX200'
+  marts_schema: 'PRESENTATION' #'PRESENTATION' #'CSX200_CSX200'
 
   # Data source configuration - SIMPLIFIED
   data_sources:
@@ -53,15 +53,15 @@ models:
   ecids_test:
     staging:
       +materialized: view
-      +schema: STAGING #STAGING
+      +schema: staging #STAGING
       # +schema: "{{ var('staging_schema') }}"
     intermediate:
       +materialized: view
-      +schema: INTEGRATION #INTEGRATION
+      +schema: integration #INTEGRATION
       # +schema: "{{ var('intermediate_schema') }}"
     marts:
       +materialized: table
-      +schema: PRESENTATION #PRESENTATION
+      +schema: presentation #PRESENTATION
       # +schema: "{{ var('marts_schema') }}"
       +cluster_by: ['program_type']
 
