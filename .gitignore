@@ -12,7 +12,7 @@ dbt.log
 .dbt/
 
 # dbt profiles (contains sensitive connection info)
-profiles.yml
+#profiles.yml
 .dbtignore
 
 # Compiled SQL and documentation
