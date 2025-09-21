@@ -3,8 +3,9 @@ shared_snowflake_profile:
     dev:
       type: snowflake
       # These are placeholders - Snowflake native execution doesn't use them
-      account: "placeholder"
-      user: "placeholder"  
+      account: dummy
+      user: dummy 
+      password: dummy
       # These inherit from Snowflake session context
       warehouse: HHS_FIVETRAN_WAREHOUSE
       database: HHS_FIVETRAN_INT_DB
