@@ -9,7 +9,7 @@ shared_snowflake_profile:
       # These inherit from Snowflake session context
       warehouse: HHS_PHSD_MIDIS_DEV_ELT_WH
       database: HHS_WRKSPC_DB
-      schema: STAGING
+      schema: CSW191
       role: HHS_SFLK_PHSD_MIDIS_ANALYST_DEV
       threads: 2
   target: dev
