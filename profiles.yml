@@ -7,9 +7,9 @@ shared_snowflake_profile:
       user: dummy 
       password: dummy
       # These inherit from Snowflake session context
-      warehouse: HHS_FIVETRAN_WAREHOUSE
-      database: HHS_FIVETRAN_INT_DB
-      schema: FIVETRAN_RAW
-      role: __HHS_FIVETRAN_INT_OWN
+      warehouse: HHS_PHSD_MIDIS_DEV_ELT_WH
+      database: HHS_WRKSPC_DB
+      schema: STAGING
+      role: HHS_SFLK_PHSD_MIDIS_ANALYST_DEV
       threads: 2
   target: dev
