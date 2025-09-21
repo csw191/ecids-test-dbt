@@ -1,4 +1,4 @@
-shared_snowflake_profile:
+ecids_dbt_project:
   outputs:
     dev:
       type: snowflake
