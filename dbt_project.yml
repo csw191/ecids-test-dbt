@@ -2,7 +2,7 @@ name: 'ecids_test'
 version: '1.0.0'
 config-version: 2
 
-# profile: 'shared_snowflake_profile'
+profile: 'shared_snowflake_profile'
 
 vars:
   #Database and Schema Configuration
