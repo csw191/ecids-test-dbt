@@ -1,9 +1,9 @@
 shared_snowflake_profile:
   outputs:
     dev:
-      type: "MONTANA-HHS"
+      type: snowflake
       # These are placeholders - Snowflake native execution doesn't use them
-      account: dummy
+      account: MONTANA-HHS
       user: "CSW191@MT.GOV"
       SNOWFLAKE_PRIVATE_KEY_PATH:"-----BEGIN PRIVATE KEY-----
 MIIJQgIBADANBgkqhkiG9w0BAQEFAASCCSwwggkoAgEAAoICAQDQWLez1/kuhYZX
