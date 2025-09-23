@@ -37,7 +37,7 @@ vars:
   
   # Business logic thresholds
   income_thresholds:
-    low: 1500
+    low: 1400
     moderate: 3000
   
   utilization_thresholds:
