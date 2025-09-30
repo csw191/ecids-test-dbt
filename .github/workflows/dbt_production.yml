@@ -1,0 +1,59 @@
+name: dbt Production Run
+
+on:
+  schedule:
+    - cron: '0 1 * * *'  # Daily at 1 AM UTC
+  workflow_dispatch:      # Allows manual trigger
+  push:
+    branches: [main]
+
+jobs:
+  run_dbt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dbt
+        run: |
+          pip install dbt-core dbt-snowflake
+      
+      - name: Setup dbt profile
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml << EOF
+          ecids_test:
+            target: prod
+            outputs:
+              prod:
+                type: snowflake
+                account: \${{ secrets.SNOWFLAKE_ACCOUNT }}
+                user: \${{ secrets.SNOWFLAKE_USER }}
+                password: \${{ secrets.SNOWFLAKE_PASSWORD }}
+                role: \${{ secrets.SNOWFLAKE_ROLE }}
+                warehouse: \${{ secrets.SNOWFLAKE_WAREHOUSE }}
+                database: \${{ secrets.SNOWFLAKE_DATABASE }}
+                schema: \${{ secrets.SNOWFLAKE_SCHEMA }}
+                threads: 4
+          EOF
+      
+      - name: Run dbt
+        run: |
+          dbt deps
+          dbt run
+          dbt test
+      
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: dbt-logs
+          path: logs/
