@@ -38,7 +38,7 @@ jobs:
         run: |
           mkdir -p ~/.dbt
           cat > ~/.dbt/profiles.yml << 'EOF'
-          ecids_test:
+          shared_snowflake_profile:
             target: prod
             outputs:
               prod:
