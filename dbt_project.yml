@@ -7,8 +7,8 @@ profile: 'shared_snowflake_profile'
 vars:
   #Database and Schema Configuration
   database_name: 'HHS_WRKSPC_DB' #HHS_WRKSPC_DB #'HHS_FIVETRAN_RAW_DB'
-  raw_schema: 'FIVETRAN_RAW' #'FIVETRAN_RAW' #'CSX200_CSX200'
-  staging_schema: 'STAGING' #'STAGING' #'CSX200_CSX200' 
+  raw_schema: 'CSW191' #'FIVETRAN_RAW' #'CSX200_CSX200'
+  staging_schema: 'FIVETRAN_RAW' #'STAGING' #'CSX200_CSX200' 
   intermediate_schema: 'INTEGRATION' #'INTEGRATION' #'CSX200_CSX200'
   marts_schema: 'PRESENTATION' #'PRESENTATION' #'CSX200_CSX200'
 

@@ -1,0 +1,86 @@
+name: dbt Production Run
+
+on:
+  schedule:
+    - cron: '0 1 * * *'  # Daily at 1 AM UTC
+  workflow_dispatch:      # Allows manual trigger
+  push:
+    branches: [main]
+
+jobs:
+  run_dbt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dbt
+        run: |
+          pip install dbt-core dbt-snowflake
+      
+      - name: Setup dbt profile
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+          SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+          SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+          SNOWFLAKE_SCHEMA: ${{ secrets.SNOWFLAKE_SCHEMA }}
+        run: |
+          mkdir -p ~/.dbt
+          python3 << 'PYTHON_EOF'
+          import os
+          import yaml
+          
+          # Write private key to a separate file
+          private_key = os.environ['SNOWFLAKE_PRIVATE_KEY']
+          key_path = os.path.expanduser('~/.dbt/snowflake_key.p8')
+          with open(key_path, 'w') as f:
+              f.write(private_key)
+          os.chmod(key_path, 0o600)  # Secure the key file
+          
+          # Create profiles.yml
+          profile = {
+              'shared_snowflake_profile': {
+                  'target': 'prod',
+                  'outputs': {
+                      'prod': {
+                          'type': 'snowflake',
+                          'account': os.environ['SNOWFLAKE_ACCOUNT'],
+                          'user': os.environ['SNOWFLAKE_USER'],
+                          'private_key_path': key_path,
+                          'role': os.environ['SNOWFLAKE_ROLE'],
+                          'warehouse': os.environ['SNOWFLAKE_WAREHOUSE'],
+                          'database': os.environ['SNOWFLAKE_DATABASE'],
+                          'schema': os.environ['SNOWFLAKE_SCHEMA'],
+                          'threads': 4
+                      }
+                  }
+              }
+          }
+          
+          with open(os.path.expanduser('~/.dbt/profiles.yml'), 'w') as f:
+              yaml.dump(profile, f, default_flow_style=False)
+          PYTHON_EOF
+      
+      - name: Run dbt
+        run: |
+          dbt deps
+          dbt run
+          dbt test
+      
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-logs
+          path: logs/
